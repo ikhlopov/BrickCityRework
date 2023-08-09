@@ -1,0 +1,50 @@
+﻿@using BrickCityRework.Models.EF
+@model List<FileStats>
+@{
+    ViewData["Title"] = "Файл";
+}
+
+<div class="text-center">
+
+    @using (Html.BeginForm("Upload", "File", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <a>Выберите JSON-файл с данными:</a>
+        <br />
+        <a>Имя файла:</a>
+        <input type="text" name="filename" />
+        <br />
+        <input type="file" name="upload" accept=".json" />
+        <br />
+        <input type="submit" value="Загрузить" />
+    }
+
+
+    <div>
+        <table class="table table-bordered table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>Имя файла</th>
+                    <th>Дата загрузки</th>
+                    <th>Минимальная дата</th>
+                    <th>Максимальная дата</th>
+                    <th>Кол-во потребителей</th>
+                    <th>Кол-во записей о потреблении</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (FileStats f in Model)
+                {
+                    <tr>
+                        <td>@f.Name</td>
+                        <td>@f.Date</td>
+                        <td>@f.MinRecordDate.ToShortDateString()</td>
+                        <td>@f.MaxRecordDate.ToShortDateString()</td>
+                        <td>@f.ConsumersCount</td>
+                        <td>@f.ConsumptionsCount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

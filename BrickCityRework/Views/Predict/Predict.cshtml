@@ -1,0 +1,55 @@
+﻿@using BrickCityRework.Controllers
+@using BrickCityRework.Models.EF;
+@model List<PredictionResult>
+@{
+    ViewData["Title"] = "Прогноз";
+}
+
+<form method="post" class="m-2">
+    <label for="FileID">Выберите файл: </label>
+    <select name="FileID" id="FileID">
+        @foreach (FileModel file in ViewBag.files)
+        {
+            @if (file.FileModelID == ViewBag.SelectedFileId)
+            {
+                <option value="@file.FileModelID" selected>
+                    @file.Name
+                </option>
+            }
+            else
+            {
+                <option value="@file.FileModelID">
+                    @file.Name
+                </option>
+            }
+        }
+    </select> <br>
+
+    <label>Выберите дату для построения прогноза на следующий день: </label>
+    <input type="date" id="date" name="date" value="@ViewBag.date.ToString("yyyy-MM-dd")" />
+    <input type="submit" value="Обновить">
+
+    <div>
+        <table class="table table-bordered table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Прогноз Потребления</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var row in Model)
+                {
+                    <tr>
+                        <td>@row.Name</td>
+                        <td>@row.predict</td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+
+</form>
+

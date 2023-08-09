@@ -1,0 +1,50 @@
+﻿@model ConsumptionGraph
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@{
+    ViewData["Title"] = "Потребление";
+}
+
+<script src="/js/highcharts.js"></script>
+<script src="/js/exporting.js"></script>
+
+@using Highsoft.Web.Mvc.Charts
+@using Highsoft.Web.Mvc.Charts.Rendering
+@using BrickCityRework.Models.EF
+
+<form method="post" class="m-2">
+    <label for="FileID">Выберите файл: </label>
+    <select name="FileID" id="FileID">
+        @foreach (FileModel file in ViewBag.Formdata.Files)
+        {
+            @if (file.FileModelID == ViewBag.Formdata.FileID)
+            {
+                <option value="@file.FileModelID" selected>
+                    @file.Name
+                </option>
+            }
+            else
+            {
+                <option value="@file.FileModelID">
+                    @file.Name
+                </option>
+            }
+        }
+    </select> <br>
+
+    <label>Выберите интервал для построения графика: </label>
+    <input type="date" id="Fromdate" name="Fromdate" value="@ViewBag.Formdata.strFromDate" />
+    <label> - </label>
+    <input type="date" id="Todate" name="Todate" value="@ViewBag.Formdata.strToDate" /> <br>
+    <input type="submit" value="Обновить">
+</form>
+
+@{
+    var renderer = new HighchartsRenderer(Model.Graph);
+}
+@Html.Raw(renderer.RenderHtml())

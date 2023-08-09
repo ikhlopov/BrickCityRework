@@ -1,0 +1,46 @@
+﻿@using BrickCityRework.Models
+@using BrickCityRework.Models.EF
+@model TrendPageGraphs
+@{
+    ViewData["Title"] = "Тренд";
+}
+
+<script src="/js/highcharts.js"></script>
+<script src="/js/exporting.js"></script>
+
+
+
+<form method="post" class="m-2">
+    <label for="FileID">Выберите файл: </label>
+    <select name="FileID" id="FileID">
+        @foreach (FileModel file in Model.files)
+        {
+            @if (file.FileModelID == Model.selectedFileId)
+            {
+                <option value="@file.FileModelID" selected>
+                    @file.Name
+                </option>
+            }
+            else
+            {
+                <option value="@file.FileModelID">
+                    @file.Name
+                </option>
+            }
+        }
+    </select> <br>
+
+    <input type="submit" value="Обновить">
+</form>
+
+@using Highsoft.Web.Mvc.Charts
+@using Highsoft.Web.Mvc.Charts.Rendering
+
+
+@{
+    var housesRenderer = new HighchartsRenderer(Model.HousesGraph.Graph);
+    var plantsRenderer = new HighchartsRenderer(Model.PlantsGraph.Graph);
+}
+@Html.Raw(housesRenderer.RenderHtml())
+
+@Html.Raw(plantsRenderer.RenderHtml())
